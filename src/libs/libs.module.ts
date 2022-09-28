@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LoggerModule } from 'nestjs-pino';
+import pino from 'pino';
 import { EnvEnum } from 'src/enums';
 
 @Global()
@@ -9,6 +11,25 @@ import { EnvEnum } from 'src/enums';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [`.${process.env.NODE_ENV}.env`],
+    }),
+    LoggerModule.forRootAsync({
+      useFactory: async () => {
+        return {
+          pinoHttp: {
+            level: process.env.NODE_ENV !== 'prod' ? 'debug' : 'info',
+            transport:
+              process.env.NODE_ENV === 'dev'
+                ? { target: 'pino-pretty' }
+                : undefined,
+            useLevelLabels: true,
+            stream: pino.destination({
+              dest: './logs', // omit for stdout
+              minLength: 4096, // Buffer before writing
+              sync: false, // Asynchronous logging
+            }),
+          },
+        };
+      },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

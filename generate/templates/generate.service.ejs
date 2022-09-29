@@ -1,0 +1,34 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Create<%= ModuleName %>Dto } from './dto/create-<%= parmaCaseModuleName %>.dto';
+import { Update<%= ModuleName %>Dto } from './dto/update-<%= parmaCaseModuleName %>.dto';
+import { <%= ModuleName %> } from './entities/<%= parmaCaseModuleName %>.entity';
+
+@Injectable()
+export class <%= ModuleName %>Service {
+  constructor(
+    @InjectRepository(<%= ModuleName %>)
+    private <%= moduleName %>Repository: Repository<<%= ModuleName %>>,
+  ) {}
+
+  async create(create<%= ModuleName %>Dto: Create<%= ModuleName %>Dto) {
+    return await this.<%= moduleName %>Repository.save(create<%= ModuleName %>Dto);
+  }
+
+  async findAll() {
+    return await this.<%= moduleName %>Repository.find();
+  }
+
+  async findOne(id: string) {
+    return await this.<%= moduleName %>Repository.findOne({ where: { id } });
+  }
+
+  async update(id: string, update<%= ModuleName %>Dto: Update<%= ModuleName %>Dto) {
+    return await this.<%= moduleName %>Repository.update(id, update<%= ModuleName %>Dto);
+  }
+
+  async remove(id: string) {
+    return await this.<%= moduleName %>Repository.delete(id);
+  }
+}

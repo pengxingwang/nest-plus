@@ -1,0 +1,45 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { Create<%= ModuleName %>Dto } from './dto/create-<%= parmaCaseModuleName %>.dto';
+import { Update<%= ModuleName %>Dto } from './dto/update-<%= parmaCaseModuleName %>.dto';
+import { <%= ModuleName %>Service } from './<%= parmaCaseModuleName %>.service';
+
+@Controller('<%= moduleName %>')
+export class <%= ModuleName %>Controller {
+  constructor(private readonly <%= moduleName %>Service: <%= ModuleName %>Service) {}
+
+  @Post()
+  async create(@Body() create<%= ModuleName %>Dto: Create<%= ModuleName %>Dto) {
+    return await this.<%= moduleName %>Service.create(create<%= ModuleName %>Dto);
+  }
+
+  @Get()
+  async findAll() {
+    return await this.<%= moduleName %>Service.findAll();
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return await this.<%= moduleName %>Service.findOne(id);
+  }
+
+  @Patch(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() update<%= ModuleName %>Dto: Update<%= ModuleName %>Dto,
+  ) {
+    return await this.<%= moduleName %>Service.update(id, update<%= ModuleName %>Dto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.<%= moduleName %>Service.remove(id);
+  }
+}

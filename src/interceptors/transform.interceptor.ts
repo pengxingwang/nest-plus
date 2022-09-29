@@ -2,6 +2,7 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
+  Logger,
   NestInterceptor,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -12,6 +13,8 @@ import { map } from 'rxjs/operators';
  */
 @Injectable()
 export class TransformInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(TransformInterceptor.name);
+
   public intercept(
     context: ExecutionContext,
     next: CallHandler,
@@ -27,7 +30,7 @@ export class TransformInterceptor implements NestInterceptor {
           User: ${JSON.stringify(req.user)}
           Response data: ${JSON.stringify(data)}
          `;
-        // Logger.info(logFormat);
+        this.logger.log(logFormat);
         return {
           data,
           code: 0,

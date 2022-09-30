@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import pino from 'pino';
 import { EnvEnum } from 'src/enums';
+import { CronModule } from './cron/cron.module';
+import { RedisCacheModule } from './redis-cache/redis-cache.module';
 
 @Global()
 @Module({
@@ -52,6 +54,8 @@ import { EnvEnum } from 'src/enums';
         bigNumberStrings: true,
       }),
     }),
+    CronModule,
+    RedisCacheModule,
   ],
 })
 export class LibsModule {}
